@@ -69,7 +69,7 @@ def createUsers():
     for line in Lines:
         user = line.strip()
         print("Creating user : {}".format(user))
-        cursor.execute("CREATE USER IF NOT EXISTS {}".format(user, user))
+        cursor.execute("CREATE USER IF NOT EXISTS {} IDENTIFIED BY '{}'".format(user, user))
         cursor.execute("GRANT USAGE ON *.* TO {}@'%' REQUIRE NONE WITH MAX_QUERIES_PER_HOUR 0 "
                        "MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0".format(user))
         cursor.execute("GRANT ALL PRIVILEGES ON {}.* TO {}@'%'".format(user, user))
