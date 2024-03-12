@@ -1,6 +1,7 @@
 import mysql.connector
 import time
 import os
+from sys import exit
 
 os.system("")
 
