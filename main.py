@@ -21,9 +21,9 @@ class style():
 
 fileName = input("Enter file name (with the file extension) : ")
 
-Lines = open(fileName, 'r').readlines()
+lines = open(fileName, 'r').readlines()
 
-print("Found {} users in the file".format(len(Lines)))
+print("Found {} users in the file".format(len(lines)))
 
 valid = input("Do you want to continue? (y/n) : ")
 if valid != "y" and valid != "Y":
@@ -45,7 +45,7 @@ try:
     )
 except Exception as e:
     print(style.RED + style.UNDERLINE + "Error while trying to connect to database. Exiting..")
-    print(style.RESET + "Error : {}".format(e))
+    print(style.RESET + "Error : {}\n".format(e))
     exit()
 
 
@@ -56,18 +56,18 @@ def action():
     act = int(input("What do you want to do? : "))
 
     if act == 1:
-        createUsers()
+        create_users()
     elif act == 2:
-        deleteUsers()
+        delete_users()
     else:
         exit()
 
 
-def createUsers():
+def create_users():
     start = time.time()
     print("Creating users...")
     cursor = mydb.cursor()
-    for line in Lines:
+    for line in lines:
         user = line.strip()
         print("Creating user : {}".format(user))
         cursor.execute("CREATE USER IF NOT EXISTS {} IDENTIFIED BY '{}'".format(user, user))
@@ -76,20 +76,20 @@ def createUsers():
         cursor.execute("GRANT ALL PRIVILEGES ON {}.* TO {}@'%'".format(user, user))
         cursor.execute("CREATE DATABASE IF NOT EXISTS {}".format(user))
         cursor.execute("GRANT ALL PRIVILEGES ON {}.* TO {}@'%'".format(user, user))
-    print("Done creating users. Took {} ms".format(time.time() - start))
+    print("Done creating users. Took {} ms\n".format(time.time() - start))
     action()
 
 
-def deleteUsers():
+def delete_users():
     start = time.time()
     print("Deleting users...")
-    for line in Lines:
+    for line in lines:
         user = line.strip()
         print("Droping user : {}".format(user))
         cursor = mydb.cursor()
         cursor.execute("DROP DATABASE IF EXISTS {}".format(user))
         cursor.execute("DROP USER IF EXISTS {}".format(user))
-    print("Done deleting users. Took {} ms".format(time.time() - start))
+    print("Done deleting users. Took {} ms\n".format(time.time() - start))
     action()
 
 
